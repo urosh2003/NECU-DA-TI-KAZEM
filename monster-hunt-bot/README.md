@@ -29,6 +29,11 @@ Pomera igrača na novu poziciju.
 
 **URL**: `PUT http://localhost:8080/player/move/gameId/{gameId}`
 
+```csharp
+   [HttpPut("move/gameId/{gameId}")]
+    public async Task<IActionResult> Move([FromRoute]string gameId,[FromBody] MoveRequest moveRequest, CancellationToken cancellationToken)
+    ```
+
 **Request Body**:
 ```json
 {
@@ -41,6 +46,11 @@ Pomera igrača na novu poziciju.
 ### 2. PUT /player/{attackerId}/attack/{attackedId}/gameId/{gameId}
 
 Napadni drugog igrača ili monstruma.
+
+```csharp
+  [HttpPut("{attackerId}/attack/{attackedId}/gameId/{gameId}")]
+    public async Task<IActionResult> Attack([FromRoute]string gameId,[FromRoute] int attackerId, [FromRoute] int attackedId, CancellationToken cancellationToken)
+    ```
 
 **URL**: `PUT http://localhost:8080/player/{attackerId}/attack/{attackedId}/gameId/{gameId}`
 
@@ -60,6 +70,11 @@ Napadni drugog igrača ili monstruma.
 
 Koristi item iz inventara.
 
+```csharp
+ [HttpPut("{playerId}/use-item/{itemId}/gameId/{gameId}")]
+    public async Task<IActionResult> UseItem([FromRoute]string gameId,[FromRoute] int playerId, [FromRoute] int itemId, CancellationToken cancellationToken)
+  ```
+
 **URL**: `PUT http://localhost:8080/player/{playerId}/use-item/{itemId}/gameId/{gameId}`
 
 **Response** (200 OK):
@@ -74,6 +89,18 @@ Koristi item iz inventara.
 ### 4. PUT /player/pickup/{playerId}/gameId/{gameId}
 
 Pokupite karticu sa mape.
+
+```csharp
+[HttpPut("pickup/{playerId}/gameId/{gameId}")]
+public async Task<IActionResult> PickUpItem(
+    [FromRoute] string gameId,
+    [FromBody] FieldInfo fieldInfo, 
+    [FromRoute] int playerId, 
+    CancellationToken cancellationToken)
+{
+    _playerServices.PickupItem(gameId, player.Id, fieldInfo);
+}
+```
 
 **URL**: `PUT http://localhost:8080/player/pickup/{playerId}/gameId/{gameId}`
 
@@ -97,6 +124,11 @@ Pokupite karticu sa mape.
 ### 5. PUT /map/{playerId}/summon/{cardId}/gameId/{gameId}
 
 Prizovite monstruma iz kartice.
+
+```csharp
+    [HttpPut("{playerId}/summon/{cardId}/gameId/{gameId}")]
+    public async Task<IActionResult> Summon([FromRoute] string gameId,[FromRoute] int playerId,[FromRoute] int cardId,[FromBody] Position summonField,CancellationToken cancellationToken)
+  ```
 
 **URL**: `PUT http://localhost:8080/map/{playerId}/summon/{cardId}/gameId/{gameId}`
 
@@ -158,18 +190,8 @@ public async Task<IActionResult> PickUpCard(
 }
 ```
 
-### 2. PlayerController - PickUpItem
-```csharp
-[HttpPut("pickup/{playerId}/gameId/{gameId}")]
-public async Task<IActionResult> PickUpItem(
-    [FromRoute] string gameId,
-    [FromBody] FieldInfo fieldInfo, 
-    [FromRoute] int playerId, 
-    CancellationToken cancellationToken)
-{
-    _playerServices.PickupItem(gameId, player.Id, fieldInfo);
-}
-```
+
+        
 
 ## Primer strukture povratka
 
